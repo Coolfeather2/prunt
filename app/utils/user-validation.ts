@@ -25,6 +25,11 @@ export const EmailSchema = z
 	.max(100, { message: 'Email is too long' })
 	// users can type the email in any case, but we store it in lowercase
 	.transform(value => value.toLowerCase())
+export const FIOAPIKeySchema = z
+	.string({ required_error: 'FIO API Key is required' })
+	.min(30, { message: 'FIO API Key is too short' })
+	.max(40, { message: 'FIO API Key is too long' })
+	.trim()
 
 export const PasswordAndConfirmPasswordSchema = z
 	.object({ password: PasswordSchema, confirmPassword: PasswordSchema })

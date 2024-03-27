@@ -11,10 +11,12 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(cuid())
-  email    String  @unique
-  username String  @unique
-  name     String?
+  id        String  @id @default(cuid())
+  email     String  @unique
+  username  String  @unique
+  name      String?
+  FIOApiKey String?
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
