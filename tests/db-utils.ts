@@ -37,7 +37,6 @@ export function createPassword(password: string = faker.internet.password()) {
 	}
 }
 
-
 let userImages: Array<Awaited<ReturnType<typeof img>>> | undefined
 export async function getUserImages() {
 	if (userImages) return userImages

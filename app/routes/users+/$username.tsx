@@ -79,7 +79,7 @@ export default function ProfileRoute() {
 									</Link>
 								</Button>
 							</>
-						) : null }
+						) : null}
 					</div>
 				</div>
 			</div>

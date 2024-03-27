@@ -25,16 +25,16 @@ interface Material {
 }
 
 interface Exchange {
-	MaterialTicker: string,
-	ExchangeCode: string,
-	MMBuy: number | null,
-	MMSell: number | null,
-	PriceAverage: number,
-	AskCount: number | null,
-	Ask: number | null,
-	Supply: number,
-	BidCount: number | null,
-	Bid: number | null,
+	MaterialTicker: string
+	ExchangeCode: string
+	MMBuy: number | null
+	MMSell: number | null
+	PriceAverage: number
+	AskCount: number | null
+	Ask: number | null
+	Supply: number
+	BidCount: number | null
+	Bid: number | null
 	Demand: number
 }
 
@@ -65,7 +65,8 @@ export const columns: ColumnDef<Material>[] = [
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</Button>
 			)
-		},	},
+		},
+	},
 	{
 		accessorKey: 'Name',
 		header: ({ column }) => {
@@ -82,22 +83,32 @@ export const columns: ColumnDef<Material>[] = [
 	},
 	{
 		accessorKey: 'exchange',
-		header: "Exchange",
-		cell: props => props.getValue().map(ex => {return (
-			<>
-				<p>EX: {ex.ExchangeCode}</p>
-				<p>Price Average: {ex.PriceAverage}</p>
-				<p>Bid: {ex.Bid}</p>
-				<p>Bid Qty: {ex.BidCount}</p>
-				<p>Ask: {ex.Ask}</p>
-				<p>Ask Qty: {ex.AskCount}</p>
-				{ex.MMBuy ? <p>Market Marker Buy: {ex.MMBuy}</p> : null}
-				{ex.MMSell ? <p>Market Marker Sell: {ex.MMSell}</p>: null}
-				<p>Supply: {ex.Supply}</p>
-				<p>Demand: {ex.Demand}</p>
-				<hr/>
-			</>
-		)})}
+		header: 'Exchange',
+		cell: props => {
+			const value = props.cell.getValue() as Exchange[] | null;
+			if (!Array.isArray(value)) {
+				// Handle the case where value is not an array
+				return null; // or some default JSX
+			}
+			return value.map((ex: Exchange) => {
+				return (
+					<>
+						<p>EX: {ex.ExchangeCode}</p>
+						<p>Price Average: {ex.PriceAverage}</p>
+						<p>Bid: {ex.Bid}</p>
+						<p>Bid Qty: {ex.BidCount}</p>
+						<p>Ask: {ex.Ask}</p>
+						<p>Ask Qty: {ex.AskCount}</p>
+						{ex.MMBuy ? <p>Market Marker Buy: {ex.MMBuy}</p> : null}
+						{ex.MMSell ? <p>Market Marker Sell: {ex.MMSell}</p> : null}
+						<p>Supply: {ex.Supply}</p>
+						<p>Demand: {ex.Demand}</p>
+						<hr />
+					</>
+				)
+			})
+		},			
+	},
 ]
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -115,15 +126,15 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
 	const materials = resMatJson.map((material: Material) => {
 		return {
-			// MaterialID: material.MaterialID,
+			MaterialID: material.MaterialID,
 			CategoryName: toHeaderCase(material.CategoryName),
-			// CategoryID: material.CategoryID,
+			CategoryID: material.CategoryID,
 			Name: toHeaderCase(material.Name),
 			Ticker: material.Ticker,
-			// Weight: material.Weight,
-			// Volume: material.Volume,
-			// UserNameSubmitted: material.UserNameSubmitted,
-			// Timestamp: material.Timestamp,
+			Weight: material.Weight,
+			Volume: material.Volume,
+			UserNameSubmitted: material.UserNameSubmitted,
+			Timestamp: material.Timestamp,
 			exchange: resExJson.filter(ex => ex.MaterialTicker === material.Ticker),
 		}
 	})
@@ -353,8 +364,10 @@ function CategoryButton({
 	setSearchParams,
 	children,
 	...props
-}): JSX.Element {
-	const category = children.toLowerCase()
+}: {    searchParams: URLSearchParams,
+    setSearchParams: (fn: (prev: URLSearchParams) => URLSearchParams) => void,
+    children: React.ReactNode,}): JSX.Element {
+	const category = children ? (children.toString().toLowerCase()) : '';
 	const categoryFilter = searchParams.get('category')
 	const variant = categoryFilter === category ? 'default' : 'outline'
 	return (

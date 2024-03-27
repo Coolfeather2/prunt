@@ -20,16 +20,14 @@ import {
 	useFetcher,
 	useFetchers,
 	useLoaderData,
-	useMatches,
 	useSubmit,
 } from '@remix-run/react'
 import { withSentry } from '@sentry/remix'
-import { useRef } from 'react'
+import {useRef} from 'react'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import { z } from 'zod'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
 import { EpicProgress } from './components/progress-bar.tsx'
-import { SearchBar } from './components/search-bar.tsx'
 import { useToast } from './components/toaster.tsx'
 import { Button } from './components/ui/button.tsx'
 import {
@@ -216,9 +214,6 @@ function App() {
 	const nonce = useNonce()
 	const user = useOptionalUser()
 	const theme = useTheme()
-	const matches = useMatches()
-	const isOnSearchPage = matches.find(m => m.id === 'routes/users+/index')
-	const searchBar = isOnSearchPage ? null : <SearchBar status="idle" />
 	useToast(data.toast)
 
 	return (
@@ -229,10 +224,8 @@ function App() {
 						<Logo />
 						<Link to="/shipping">Shipping</Link>
 						<Link to="/stocks">Stocks</Link>
-						<div className="ml-auto hidden max-w-sm flex-1 sm:block">
-							
-						</div>
-						{/* <div className="flex items-center gap-10">
+						<div className="ml-auto hidden max-w-sm flex-1 sm:block"></div>
+						<div className="flex items-center gap-10">
 							{user ? (
 								<UserDropdown />
 							) : (
@@ -240,7 +233,7 @@ function App() {
 									<Link to="/login">Log In</Link>
 								</Button>
 							)}
-							</div> */}
+							</div>
 					</nav>
 				</header>
 
@@ -282,6 +275,7 @@ function AppWithProviders() {
 }
 
 export default withSentry(AppWithProviders)
+
 
 function UserDropdown() {
 	const user = useUser()
