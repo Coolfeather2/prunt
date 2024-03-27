@@ -227,6 +227,8 @@ function App() {
 				<header className="container py-6">
 					<nav className="flex flex-wrap items-center justify-between gap-4 sm:flex-nowrap md:gap-8">
 						<Logo />
+						<Link to="/shipping">Shipping</Link>
+						<Link to="/stocks">Stocks</Link>
 						<div className="ml-auto hidden max-w-sm flex-1 sm:block">
 							{searchBar}
 						</div>
