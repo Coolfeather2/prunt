@@ -18,8 +18,9 @@ import { toHeaderCase } from '#app/utils/misc'
 import { DataTable } from '#app/components/data-table'
 import { Button } from '#app/components/ui/button'
 import { Children, useState } from 'react'
+import { p } from '#build/server/assets/server-build-V9Qe0wty'
 
-export const meta: MetaFunction = () => [{ title: 'Epic Notes' }]
+export const meta: MetaFunction = () => [{ title: 'Prun Tools' }]
 
 interface Material {
 	MaterialID: string
@@ -31,6 +32,20 @@ interface Material {
 	Volume: number
 	UserNameSubmitted: string
 	Timestamp: string
+}
+
+interface Exchange {
+	MaterialTicker: string,
+	ExchangeCode: string,
+	MMBuy: number | null,
+	MMSell: number | null,
+	PriceAverage: number,
+	AskCount: number | null,
+	Ask: number | null,
+	Supply: number,
+	BidCount: number | null,
+	Bid: number | null,
+	Demand: number
 }
 
 export const columns: ColumnDef<Material>[] = [
@@ -49,6 +64,19 @@ export const columns: ColumnDef<Material>[] = [
 		},
 	},
 	{
+		accessorKey: 'Ticker',
+		header: ({ column }) => {
+			return (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+				>
+					Ticker
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</Button>
+			)
+		},	},
+	{
 		accessorKey: 'Name',
 		header: ({ column }) => {
 			return (
@@ -62,29 +90,51 @@ export const columns: ColumnDef<Material>[] = [
 			)
 		},
 	},
+	{
+		accessorKey: 'exchange',
+		header: "Exchange",
+		cell: props => props.getValue().map(ex => {return (
+			<>
+				<p>EX: {ex.ExchangeCode}</p>
+				<p>Price Average: {ex.PriceAverage}</p>
+				<p>Bid: {ex.Bid}</p>
+				<p>Bid Qty: {ex.BidCount}</p>
+				<p>Ask: {ex.Ask}</p>
+				<p>Ask Qty: {ex.AskCount}</p>
+				{ex.MMBuy ? <p>Market Marker Buy: {ex.MMBuy}</p> : null}
+				{ex.MMSell ? <p>Market Marker Sell: {ex.MMSell}</p>: null}
+				<p>Supply: {ex.Supply}</p>
+				<p>Demand: {ex.Demand}</p>
+				<hr/>
+			</>
+		)})}
 ]
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
 	const categoryFilter = new URL(request.url).searchParams.get('category')
 
-	const res = await fetch(
+	const resMat = await fetch(
 		categoryFilter
 			? `https://rest.fnar.net/material/category/${categoryFilter}`
 			: 'https://rest.fnar.net/material/allmaterials',
 	)
-	const resJson = (await res.json()) as Material[]
+	const resEx = await fetch('https://rest.fnar.net/exchange/all')
 
-	const materials: Material[] = resJson.map((material: Material) => {
+	const resMatJson = (await resMat.json()) as Material[]
+	const resExJson = (await resEx.json()) as Exchange[]
+
+	const materials = resMatJson.map((material: Material) => {
 		return {
-			MaterialID: material.MaterialID,
+			// MaterialID: material.MaterialID,
 			CategoryName: toHeaderCase(material.CategoryName),
-			CategoryID: material.CategoryID,
+			// CategoryID: material.CategoryID,
 			Name: toHeaderCase(material.Name),
 			Ticker: material.Ticker,
-			Weight: material.Weight,
-			Volume: material.Volume,
-			UserNameSubmitted: material.UserNameSubmitted,
-			Timestamp: material.Timestamp,
+			// Weight: material.Weight,
+			// Volume: material.Volume,
+			// UserNameSubmitted: material.UserNameSubmitted,
+			// Timestamp: material.Timestamp,
+			exchange: resExJson.filter(ex => ex.MaterialTicker === material.Ticker),
 		}
 	})
 
