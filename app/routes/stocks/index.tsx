@@ -3,7 +3,7 @@ import {
 	type LoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node'
-import { useLoaderData, useSearchParams } from '@remix-run/react'
+import { Form, useLoaderData, useSearchParams } from '@remix-run/react'
 import { type ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
 import { DataTable } from '#app/components/data-table'
@@ -144,7 +144,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
 export default function Index() {
 	const materials = useLoaderData<typeof loader>()
-	const [searchParams, setSearchParams] = useSearchParams()
+	const [searchParams] = useSearchParams()
 	const categoryURL = searchParams.get('category')
 
 	const categoryList = [
@@ -184,16 +184,10 @@ export default function Index() {
 	]
 
 	return (
-		<>
+		<Form>
 			<Button
 				variant={searchParams.has('category') ? 'outline' : 'default'}
-				onClick={e => {
-					e.preventDefault()
-					setSearchParams(prev => {
-						prev.delete('category')
-						return prev
-					})
-				}}
+				value=''
 			>
 				All
 			</Button>
@@ -203,7 +197,6 @@ export default function Index() {
 					key={category}
 					category={category}
 					categoryURL={categoryURL}
-					setSearchParams={setSearchParams}
 				/>
 			))
 
@@ -212,8 +205,8 @@ export default function Index() {
 			<p>Hold shift to sort multiple at once.</p>
 			<hr/>
 			<DataTable columns={columns} data={materials} />
-		</>
-	)
+		</Form>
+	);
 }
 
 /**
@@ -222,38 +215,29 @@ export default function Index() {
  * @param {Object} props - The properties passed to the component.
  * @param {string} props.category - The category to display on the button. This is used to determine the variant of the button.
  * @param {string | null} props.categoryURL - The current category on the URL. This is used to determine the variant of the button.
- * @param {Function} props.setSearchParams - A function that updates the URL search parameters.
  * @returns {JSX.Element} A JSX element that represents a button.
  *
  * @example
  * <CategoryButton
  *     category={category}
  *     categoryURL={categoryURL}
- *     setSearchParams={setSearchParams}
  * />
  */
 function CategoryButton({
 		category, //The category to display on the button
 		categoryURL, //The current category on the URL
-		setSearchParams,
 		...props
 	}: {
 		category: string,
 		categoryURL: string | null,
-		setSearchParams: (params: URLSearchParams) => void,
 	}): JSX.Element {
 	const variant = category === categoryURL ? 'default' : 'outline'
 	return (
 		<Button
 			variant={variant}
 			{...props}
-			onClick={e => {
-				e.preventDefault()
-				const params = new URLSearchParams();
-				params.set("category", category);
-				setSearchParams(params);	
-				}
-			}
+			name="category"
+			value={category}
 		>
 			{category}
 		</Button>
