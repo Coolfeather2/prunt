@@ -19,7 +19,7 @@ import { Button } from '#app/components/ui/button'
 import { Link } from '@remix-run/react'
   
 
-export const meta: MetaFunction = () => [{ title: 'Epic Notes' }]
+export const meta: MetaFunction = () => [{ title: 'Prun Tools' }]
 
 
 export default function Index() {

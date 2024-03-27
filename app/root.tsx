@@ -230,9 +230,9 @@ function App() {
 						<Link to="/shipping">Shipping</Link>
 						<Link to="/stocks">Stocks</Link>
 						<div className="ml-auto hidden max-w-sm flex-1 sm:block">
-							{searchBar}
+							
 						</div>
-						<div className="flex items-center gap-10">
+						{/* <div className="flex items-center gap-10">
 							{user ? (
 								<UserDropdown />
 							) : (
@@ -240,8 +240,7 @@ function App() {
 									<Link to="/login">Log In</Link>
 								</Button>
 							)}
-						</div>
-						<div className="block w-full sm:hidden">{searchBar}</div>
+							</div> */}
 					</nav>
 				</header>
 
@@ -315,13 +314,6 @@ function UserDropdown() {
 						<Link prefetch="intent" to={`/users/${user.username}`}>
 							<Icon className="text-body-md" name="avatar">
 								Profile
-							</Icon>
-						</Link>
-					</DropdownMenuItem>
-					<DropdownMenuItem asChild>
-						<Link prefetch="intent" to={`/users/${user.username}/notes`}>
-							<Icon className="text-body-md" name="pencil-2">
-								Notes
 							</Icon>
 						</Link>
 					</DropdownMenuItem>

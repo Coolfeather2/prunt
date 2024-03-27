@@ -5,20 +5,10 @@ import {
 } from '@remix-run/node'
 import { useLoaderData, useSearchParams } from '@remix-run/react'
 import { type ColumnDef } from '@tanstack/react-table'
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from '#app/components/ui/table'
 import { ArrowUpDown } from 'lucide-react'
-import { toHeaderCase } from '#app/utils/misc'
 import { DataTable } from '#app/components/data-table'
 import { Button } from '#app/components/ui/button'
-import { Children, useState } from 'react'
-import { p } from '#build/server/assets/server-build-V9Qe0wty'
+import { toHeaderCase } from '#app/utils/misc'
 
 export const meta: MetaFunction = () => [{ title: 'Prun Tools' }]
 
