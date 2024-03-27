@@ -145,6 +145,43 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export default function Index() {
 	const materials = useLoaderData<typeof loader>()
 	const [searchParams, setSearchParams] = useSearchParams()
+	const categoryURL = searchParams.get('category')
+
+	const categoryList = [
+		'Agricultural Products',
+		'Alloys',
+		'Chemicals',
+		'Construction Materials',
+		'Construction Parts',
+		'Construction Prefabs',
+		'Consumables Basic',
+		'Consumables Luxury',
+		'Drones',
+		'Electronic Devices',
+		'Electronic Parts',
+		'Electronic Pieces',
+		'Electronic Systems',
+		'Elements',
+		'Energy Systems',
+		'Fuels',
+		'Gases',
+		'Liquids',
+		'Medical Equipment',
+		'Metals',
+		'Minerals',
+		'Plastics',
+		'Ship Engines',
+		'Ship Kits',
+		'Ship Parts',
+		'Ship Shields',
+		'Software Components',
+		'Software Systems',
+		'Software Tools',
+		'Textiles',
+		'Unit Prefabs',
+		'Utility',
+	
+	]
 
 	return (
 		<>
@@ -160,229 +197,65 @@ export default function Index() {
 			>
 				All
 			</Button>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Agricultural Products
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Alloys
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Chemicals
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Construction Materials
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Construction Parts
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Construction Prefabs
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Consumables Basic
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Consumables Luxury
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Drones
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Electronic Devices
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Electronic Parts
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Electronic Pieces
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Electronic Systems
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Elements
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Energy Systems
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Fuels
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Gases
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Liquids
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Medical Equipment
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Metals
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Minerals
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Plastics
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Ship Engines
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Ship Kits
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Ship Parts
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Ship Shields
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Software Components
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Software Systems
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Software Tools
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Textiles
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Unit Prefabs
-			</CategoryButton>
-			<CategoryButton
-				searchParams={searchParams}
-				setSearchParams={setSearchParams}
-			>
-				Utility
-			</CategoryButton>
+			<hr/>
+			{categoryList.map(category => (
+				<CategoryButton
+					key={category}
+					category={category}
+					categoryURL={categoryURL}
+					setSearchParams={setSearchParams}
+				/>
+			))
+
+			}
+			<hr/>
 			<p>Hold shift to sort multiple at once.</p>
+			<hr/>
 			<DataTable columns={columns} data={materials} />
 		</>
 	)
 }
 
-//create a button that changes variant if url param matches category
+/**
+ * CategoryButton is a React component that renders a button. The variant of the button is determined by comparing the `category` prop to the `categoryURL` prop. If they're equal, the variant is 'default'. Otherwise, the variant is 'outline'.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.category - The category to display on the button. This is used to determine the variant of the button.
+ * @param {string | null} props.categoryURL - The current category on the URL. This is used to determine the variant of the button.
+ * @param {Function} props.setSearchParams - A function that updates the URL search parameters.
+ * @returns {JSX.Element} A JSX element that represents a button.
+ *
+ * @example
+ * <CategoryButton
+ *     category={category}
+ *     categoryURL={categoryURL}
+ *     setSearchParams={setSearchParams}
+ * />
+ */
 function CategoryButton({
-	searchParams,
-	setSearchParams,
-	children,
-	...props
-}: {    searchParams: URLSearchParams,
-    setSearchParams: (fn: (prev: URLSearchParams) => URLSearchParams) => void,
-    children: React.ReactNode,}): JSX.Element {
-	const category = children ? (children.toString().toLowerCase()) : '';
-	const categoryFilter = searchParams.get('category')
-	const variant = categoryFilter === category ? 'default' : 'outline'
+		category, //The category to display on the button
+		categoryURL, //The current category on the URL
+		setSearchParams,
+		...props
+	}: {
+		category: string,
+		categoryURL: string | null,
+		setSearchParams: (params: URLSearchParams) => void,
+	}): JSX.Element {
+	const variant = category === categoryURL ? 'default' : 'outline'
 	return (
 		<Button
 			variant={variant}
 			{...props}
 			onClick={e => {
 				e.preventDefault()
-				setSearchParams(prev => {
-					prev.set('category', category)
-					return prev
-				})
-			}}
+				const params = new URLSearchParams();
+				params.set("category", category);
+				setSearchParams(params);	
+				}
+			}
 		>
-			{children}
+			{category}
 		</Button>
 	)
 }
