@@ -50,7 +50,7 @@ export default function Index() {
 							<p>• Shipping status</p>
 						</CardContent>
 						<CardFooter>
-							<Button>
+							<Button asChild>
 								<Link to="/shipping">View</Link>
 							</Button>
 						</CardFooter>
@@ -64,7 +64,7 @@ export default function Index() {
 							<p>Display list of Materials and exchange data</p>
 						</CardContent>
 						<CardFooter>
-							<Button>
+							<Button asChild>
 								<Link to="/stocks">View</Link>
 							</Button>
 						</CardFooter>
