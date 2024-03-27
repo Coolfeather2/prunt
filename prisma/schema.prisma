@@ -11,55 +11,21 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(cuid())
-  email    String  @unique
-  username String  @unique
-  name     String?
+  id        String  @id @default(cuid())
+  email     String  @unique
+  username  String  @unique
+  name      String?
+  FIOApiKey String?
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   image       UserImage?
   password    Password?
-  notes       Note[]
   roles       Role[]
   sessions    Session[]
   connections Connection[]
-}
-
-model Note {
-  id      String @id @default(cuid())
-  title   String
-  content String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  ownerId String
-
-  images NoteImage[]
-
-  // non-unique foreign key
-  @@index([ownerId])
-  // This helps our order by in the user search a LOT
-  @@index([ownerId, updatedAt])
-}
-
-model NoteImage {
-  id          String  @id @default(cuid())
-  altText     String?
-  contentType String
-  blob        Bytes
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  note   Note   @relation(fields: [noteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  noteId String
-
-  // non-unique foreign key
-  @@index([noteId])
 }
 
 model UserImage {

@@ -20,3 +20,9 @@ node_modules
 
 # Easy way to create temporary files/folders that won't accidentally be added to git
 *.local.*
+
+# Sentry Config File
+.sentryclirc
+
+# Sentry Config File
+.env.sentry-build-plugin

@@ -18,7 +18,7 @@ import { prisma } from '#app/utils/db.server.ts'
 import { getUserImgSrc, useDoubleCheck } from '#app/utils/misc.tsx'
 import { authSessionStorage } from '#app/utils/session.server.ts'
 import { redirectWithToast } from '#app/utils/toast.server.ts'
-import { NameSchema, UsernameSchema } from '#app/utils/user-validation.ts'
+import { FIOAPIKeySchema, NameSchema, UsernameSchema } from '#app/utils/user-validation.ts'
 import { twoFAVerificationType } from './profile.two-factor.tsx'
 
 export const handle: SEOHandle = {
@@ -28,6 +28,7 @@ export const handle: SEOHandle = {
 const ProfileFormSchema = z.object({
 	name: NameSchema.optional(),
 	username: UsernameSchema,
+	fioapikey: FIOAPIKeySchema.optional(),
 })
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -38,6 +39,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 			id: true,
 			name: true,
 			username: true,
+			FIOApiKey: true,
 			email: true,
 			image: {
 				select: { id: true },
@@ -163,7 +165,7 @@ export default function EditUserProfile() {
 				<div>
 					<Link
 						reloadDocument
-						download="my-epic-notes-data.json"
+						download="my-prun-tools-data.json"
 						to="/resources/download-user-data"
 					>
 						<Icon name="download">Download your data</Icon>
@@ -208,6 +210,7 @@ async function profileUpdateAction({ userId, formData }: ProfileActionArgs) {
 		data: {
 			name: data.name,
 			username: data.username,
+			FIOApiKey: data.fioapikey,
 		},
 	})
 
@@ -231,6 +234,7 @@ function UpdateProfile() {
 		defaultValue: {
 			username: data.user.username,
 			name: data.user.name,
+			fioapikey: data.user.FIOApiKey,
 		},
 	})
 
@@ -251,6 +255,15 @@ function UpdateProfile() {
 					labelProps={{ htmlFor: fields.name.id, children: 'Name' }}
 					inputProps={getInputProps(fields.name, { type: 'text' })}
 					errors={fields.name.errors}
+				/>
+				<Field
+					className="col-span-6"
+					labelProps={{
+						htmlFor: fields.fioapikey.id,
+						children: 'FIO API Key',
+					}}
+					inputProps={getInputProps(fields.fioapikey, { type: 'text' })}
+					errors={fields.fioapikey.errors}
 				/>
 			</div>
 

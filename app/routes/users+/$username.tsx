@@ -74,23 +74,12 @@ export default function ProfileRoute() {
 						{isLoggedInUser ? (
 							<>
 								<Button asChild>
-									<Link to="notes" prefetch="intent">
-										My notes
-									</Link>
-								</Button>
-								<Button asChild>
 									<Link to="/settings/profile" prefetch="intent">
 										Edit profile
 									</Link>
 								</Button>
 							</>
-						) : (
-							<Button asChild>
-								<Link to="notes" prefetch="intent">
-									{userDisplayName}'s notes
-								</Link>
-							</Button>
-						)}
+						) : null}
 					</div>
 				</div>
 			</div>
@@ -101,10 +90,10 @@ export default function ProfileRoute() {
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
 	const displayName = data?.user.name ?? params.username
 	return [
-		{ title: `${displayName} | Epic Notes` },
+		{ title: `${displayName} | Prun Tools` },
 		{
 			name: 'description',
-			content: `Profile of ${displayName} on Epic Notes`,
+			content: `Profile of ${displayName} on Prun Tools`,
 		},
 	]
 }

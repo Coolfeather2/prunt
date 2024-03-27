@@ -20,16 +20,14 @@ import {
 	useFetcher,
 	useFetchers,
 	useLoaderData,
-	useMatches,
 	useSubmit,
 } from '@remix-run/react'
 import { withSentry } from '@sentry/remix'
-import { useRef } from 'react'
+import {useRef} from 'react'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import { z } from 'zod'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
 import { EpicProgress } from './components/progress-bar.tsx'
-import { SearchBar } from './components/search-bar.tsx'
 import { useToast } from './components/toaster.tsx'
 import { Button } from './components/ui/button.tsx'
 import {
@@ -80,7 +78,7 @@ export const links: LinksFunction = () => {
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	return [
-		{ title: data ? 'Epic Notes' : 'Error | Epic Notes' },
+		{ title: data ? 'Prun Tools' : 'Error | Prun Tools' },
 		{ name: 'description', content: `Your own captain's log` },
 	]
 }
@@ -216,9 +214,6 @@ function App() {
 	const nonce = useNonce()
 	const user = useOptionalUser()
 	const theme = useTheme()
-	const matches = useMatches()
-	const isOnSearchPage = matches.find(m => m.id === 'routes/users+/index')
-	const searchBar = isOnSearchPage ? null : <SearchBar status="idle" />
 	useToast(data.toast)
 
 	return (
@@ -227,9 +222,9 @@ function App() {
 				<header className="container py-6">
 					<nav className="flex flex-wrap items-center justify-between gap-4 sm:flex-nowrap md:gap-8">
 						<Logo />
-						<div className="ml-auto hidden max-w-sm flex-1 sm:block">
-							{searchBar}
-						</div>
+						<Link to="/shipping">Shipping</Link>
+						<Link to="/stocks">Stocks</Link>
+						<div className="ml-auto hidden max-w-sm flex-1 sm:block"></div>
 						<div className="flex items-center gap-10">
 							{user ? (
 								<UserDropdown />
@@ -238,8 +233,7 @@ function App() {
 									<Link to="/login">Log In</Link>
 								</Button>
 							)}
-						</div>
-						<div className="block w-full sm:hidden">{searchBar}</div>
+							</div>
 					</nav>
 				</header>
 
@@ -262,10 +256,10 @@ function Logo() {
 	return (
 		<Link to="/" className="group grid leading-snug">
 			<span className="font-light transition group-hover:-translate-x-1">
-				epic
+				Prun
 			</span>
 			<span className="font-bold transition group-hover:translate-x-1">
-				notes
+				Tools
 			</span>
 		</Link>
 	)
@@ -281,6 +275,7 @@ function AppWithProviders() {
 }
 
 export default withSentry(AppWithProviders)
+
 
 function UserDropdown() {
 	const user = useUser()
@@ -313,13 +308,6 @@ function UserDropdown() {
 						<Link prefetch="intent" to={`/users/${user.username}`}>
 							<Icon className="text-body-md" name="avatar">
 								Profile
-							</Icon>
-						</Link>
-					</DropdownMenuItem>
-					<DropdownMenuItem asChild>
-						<Link prefetch="intent" to={`/users/${user.username}/notes`}>
-							<Icon className="text-body-md" name="pencil-2">
-								Notes
 							</Icon>
 						</Link>
 					</DropdownMenuItem>
