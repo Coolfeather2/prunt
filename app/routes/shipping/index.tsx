@@ -20,9 +20,9 @@ import { Button } from '#app/components/ui/button'
 import { Card } from '#app/components/ui/card'
 import { Progress } from '#app/components/ui/progress'
 import { StatusButton } from '#app/components/ui/status-button'
-import { useIsPending } from '#app/utils/misc'
+import { getUserId } from '#app/utils/auth.server'
 import { prisma } from '#app/utils/db.server'
-import { requireUserId } from '#app/utils/auth.server'
+import { useIsPending } from '#app/utils/misc'
 
 const UsernameFormSchema = z.object({
 	username: z.string(),
@@ -69,14 +69,12 @@ interface FlightLine {
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	const usernameFilter = new URL(request.url).searchParams.get('username')
-	const userId = await requireUserId(request)
-
-	const userFIOApiKey = await prisma.user.findUniqueOrThrow({where: { id: userId }, select: { FIOApiKey: true }})
-
 	if (usernameFilter !== null) {
+	const userId = await getUserId(request)
+		const user = userId ? await prisma.user.findUniqueOrThrow({where: { id: userId }, select: { FIOApiKey: true }}) : null
 		const resflights = await fetch(
 			`https://rest.fnar.net/ship/flights/${usernameFilter}`,
-			{ headers: { Authorization: `${userFIOApiKey || process.env.FIO_API_KEY}` } },
+			{ headers: { Authorization: `${user?.FIOApiKey || process.env.FIO_API_KEY}` } },
 		)
 		console.log(resflights.status)
 		//handle fetch errors only return on 200
