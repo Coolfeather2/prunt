@@ -20,16 +20,20 @@ export function init() {
 			return event
 		},
 		integrations: [
-			new Sentry.BrowserTracing({
-				routingInstrumentation: Sentry.remixRouterInstrumentation(
+			Sentry.browserTracingIntegration({
 					useEffect,
 					useLocation,
 					useMatches,
-				),
 			}),
 			// Replay is only available in the client
-			new Sentry.Replay(),
+			Sentry.replayIntegration(),
 			new Sentry.BrowserProfilingIntegration(),
+			//feedback
+			Sentry.feedbackIntegration({
+				showEmail: false,
+				nameLabel: 'Username',
+				namePlaceholder: 'Enter your username',
+			}),
 		],
 
 		// Set tracesSampleRate to 1.0 to capture 100%

@@ -1,3 +1,4 @@
+import { codecovVitePlugin } from "@codecov/vite-plugin";
 import { vitePlugin as remix } from '@remix-run/dev'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import { glob } from 'glob'
@@ -58,5 +59,12 @@ export default defineConfig({
 					},
 				})
 			: null,
+		process.env.CODECOV_TOKEN
+			? codecovVitePlugin({
+			enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+			bundleName: "Coolfeather2/prunt",
+			uploadToken: process.env.CODECOV_TOKEN,
+		  })
+		  : null,
 	],
 })
