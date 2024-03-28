@@ -52,6 +52,7 @@ import { type Theme, setTheme, getTheme } from './utils/theme.server.ts'
 import { makeTimings, time } from './utils/timing.server.ts'
 import { getToast } from './utils/toast.server.ts'
 import { useOptionalUser, useUser } from './utils/user.ts'
+import { Separator } from './components/ui/separator.tsx'
 
 export const links: LinksFunction = () => {
 	return [
@@ -223,7 +224,7 @@ function App() {
 					<nav className="flex flex-wrap items-center justify-between gap-4 sm:flex-nowrap md:gap-8">
 						<Logo />
 						<Link to="/shipping">Shipping</Link>
-						<Link to="/stocks">Stocks</Link>
+						<Link to="/exchange">Exchange</Link>
 						<div className="ml-auto hidden max-w-sm flex-1 sm:block"></div>
 						<div className="flex items-center gap-10">
 							{user ? (
@@ -235,6 +236,7 @@ function App() {
 							)}
 							</div>
 					</nav>
+					<Separator className='my-4' />
 				</header>
 
 				<div className="flex-1">
