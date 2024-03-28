@@ -1,9 +1,8 @@
 import {
 	json,
 	type LoaderFunctionArgs,
-	type MetaFunction,
 } from '@remix-run/node'
-import { Form, useLoaderData, useSearchParams } from '@remix-run/react'
+import { useLoaderData } from '@remix-run/react'
 import { type ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
 import { DataTable } from '#app/components/data-table'
