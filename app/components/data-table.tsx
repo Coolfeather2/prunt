@@ -46,7 +46,7 @@ export function DataTable<TData, TValue>({
 
 	return (
 		<div className="rounded-md border">
-			<div className="flex items-center py-4">
+			<div className="flex items-center py-4 mx-4">
 				<DebouncedInput
 					placeholder="Search..."
 					value={globalFilter ?? ''}

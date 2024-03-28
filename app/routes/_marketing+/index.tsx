@@ -57,15 +57,15 @@ export default function Index() {
 					</Card>
 					<Card>
 						<CardHeader>
-							<CardTitle>Stocks</CardTitle>
+							<CardTitle>Stock Exchange</CardTitle>
 							<CardDescription>Work in Progress</CardDescription>
 						</CardHeader>
 						<CardContent>
-							<p>Display list of Materials and exchange data</p>
+							<p>Display exchange data for materials</p>
 						</CardContent>
 						<CardFooter>
 							<Button asChild>
-								<Link to="/stocks">View</Link>
+								<Link to="/exchange">View</Link>
 							</Button>
 						</CardFooter>
 					</Card>
