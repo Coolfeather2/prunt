@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         PrUn Tool - KAWA Importer
-// @version      2024-03-30.01
+// @version      2024-03-30.02
 // @description  Import KAWA prices into PRUNplanner
 // @author       Coolfeather2
 // @match        https://prunplanner.org/cx
@@ -9,17 +9,6 @@
 // @downloadURL  https://raw.githubusercontent.com/Coolfeather2/prunt/tampermonkey/kawa.js
 // @updateURL    https://raw.githubusercontent.com/Coolfeather2/prunt/tampermonkey/kawa.js
 // ==/UserScript==
-
-const item = {
-    "@collectionId": "8o9dnudhyalb7du",
-    "@collectionName": "kawa_pricing",
-    "created": "2024-03-29 19:51:36.235",
-    "id": "pgbzsp3aloz8987",
-    "planet": "Etherwind",
-    "price": 105,
-    "ticker": "FOD",
-    "updated": "2024-03-29 19:51:36.235"
-    };
 
 function createButton() {
   const button = document.createElement("button");
